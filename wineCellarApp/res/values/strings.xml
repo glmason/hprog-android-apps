@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome">Welcome to the Mason Wine Cellar!</string>
+    <string name="app_name">Mason Wine Cellar</string>
+    <string name="col_Name">name</string>
+	<string name="col_Region">region</string>
+	<string name="col_Grape">grape</string>
+    <string name="col_Category">category</string>
+	<string name="col_DateAcquired">dateacquired</string>
+	<string name="col_DateConsumed">dateconsumed</string>
+    <string name="col_Notes">notes</string> 
+    <string name="col_ProdCode">code</string>
+	<string name="col_DateOfNote">dateofnote</string>
+	<string name="gss_FileName">Mason Wine List</string>    
+    <string name="wks_Wines">Inventory</string> 
+    <string name="wks_Notes">Notes</string>  
+</resources>

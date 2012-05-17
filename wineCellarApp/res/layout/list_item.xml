@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lineItem"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"    
+    android:padding="6dip">
+    
+    <TextView
+        android:id="@+id/topLine"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip" 
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20px"
+        android:textSize="20sp"/>
+        
+    <TextView  
+        android:id="@+id/secondLine"       
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:layout_below="@id/topLine" 
+        android:textSize="16sp" 
+        android:layout_alignLeft="@+id/topLine" 
+        android:layout_alignRight="@+id/stock"/>
+               
+    <TextView
+        android:id="@+id/stock"       
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"       
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10px"
+        android:textSize="10sp"       
+        android:text="In Stock"/>
+        
+    <TextView
+        android:id="@+id/numBot"       
+        android:layout_width="wrap_content"
+        android:layout_height="26dip"        
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/stock"
+        android:layout_marginRight="20px"        
+        android:textSize="18sp"
+        android:text="2"/>
+
+</RelativeLayout>
