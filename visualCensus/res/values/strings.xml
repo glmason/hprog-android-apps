@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">VisualCensus</string>
+	<string name="tract">Census Tract</string>
+	<string name="blockgroup">Block Group</string>
+	<string name="block">Census Block</string>
+</resources>

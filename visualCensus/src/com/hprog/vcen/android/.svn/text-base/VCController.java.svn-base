@@ -1,0 +1,62 @@
+package com.hprog.vcen.android.session;
+
+import android.util.Log;
+
+import com.google.android.maps.GeoPoint;
+import com.hprog.vcen.android.DrawableStats;
+import com.hprog.vcen.android.LocateCurrentTract;
+import com.hprog.vcen.android.VCMapViewer;
+import com.hprog.vcen.android.VCTabLayout;
+
+public class VCController {
+	static VCController control;
+	static VCTabLayout tabControl;
+	static LocateCurrentTract tractInfoControl;
+	static VCMapViewer mapControl;
+	static DrawableStats graphStatsControl;
+	public static boolean boundaryWaitingFlag = false;
+	//TableDataView tableDataControl
+	
+	private VCController() {		
+	}
+	
+	static public VCController setController() {
+		if (control == null) {
+	        control = new VCController();
+		}
+		return control;
+	}
+
+	public static void setControl(VCController control) {
+		VCController.control = control;
+	}
+
+	public static void register(VCTabLayout tabControl) {
+		VCController.tabControl = tabControl;
+        SessionConstants.getSessionConstants().setMainActivity(tabControl);
+        SessionConstants.getSessionLocMgr();
+	}
+
+	public static void register(LocateCurrentTract tractInfoControl) {
+		VCController.tractInfoControl = tractInfoControl;
+	}
+
+	public static void register(VCMapViewer mapControl) {
+		VCController.mapControl = mapControl;
+		Log.d("VCController", "mapControl is registered");
+	}
+
+	public static void register(DrawableStats graphStatsControl) {
+		VCController.graphStatsControl = graphStatsControl;
+	}
+	
+	public static void drawTractBoundary(GeoPoint gpt, boolean addToOverlays) {
+		if (mapControl != null) {
+		    VCController.mapControl.setCenter(gpt);
+		    VCController.mapControl.drawTractOverlay(addToOverlays);
+		} else {
+			boundaryWaitingFlag = true;
+		}
+	}
+
+}

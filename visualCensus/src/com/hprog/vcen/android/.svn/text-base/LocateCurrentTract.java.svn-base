@@ -1,0 +1,141 @@
+package com.hprog.vcen.android;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.Button;
+import android.widget.SlidingDrawer;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
+import com.hprog.vcen.android.application.ApplicationConstants;
+import com.hprog.vcen.android.helpers.Coord;
+import com.hprog.vcen.android.session.SessionCommon;
+import com.hprog.vcen.android.session.SessionConstants;
+import com.hprog.vcen.android.session.VCController;
+import com.hprog.vcen.android.session.VCServletConstants;
+import com.hprog.vcen.android.vcml.VCTractBean;
+import com.hprog.vcen.android.vcml.XmlPullTractParser;
+
+public class LocateCurrentTract extends Activity implements VCServletConstants {
+	private String tractTX;
+	private String bgTX;
+	private String blockTX;
+	private TextView tractTV;
+	private TextView bgTV;
+	private TextView blockTV;
+	private Button setVCGeo;
+	private SlidingDrawer drawerSD;
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.current_tract_view);
+		VCController.register(this);
+		initControls();
+		this.registerForContextMenu(setVCGeo);
+		//setLocData();
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+		this.getMenuInflater().inflate(R.menu.data_settings, menu);
+		return true;
+	}
+	
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		
+		if (v.getId() == R.id.setCensusGeo) {
+			getMenuInflater().inflate(R.menu.get_area_by_con_menu, menu);
+			menu.setHeaderIcon(android.R.drawable.ic_media_play)
+			    .setHeaderTitle("Choose Selection Method");
+		}
+	}
+	
+	private void initControls()
+	{
+		drawerSD = (SlidingDrawer) this.getParent().findViewById(R.id.drawer);
+		tractTV=(TextView)findViewById(R.id.tractValue);
+		bgTV=(TextView)findViewById(R.id.bgValue);
+		blockTV=(TextView)findViewById(R.id.blockValue);
+		setTract("0");
+		setBg("0");
+		setBlock("0");
+
+		setVCGeo=(Button)findViewById(R.id.setCensusGeo);
+		setVCGeo.setOnClickListener(new Button.OnClickListener() { 
+			public void onClick (View v){
+				Coord c = SessionConstants.getVCLocation().getCurrentLatLng();
+				setLocData(c); 
+				}
+			}
+		);
+	}
+	
+	private void setLocData(Coord c) {
+		// TODO set this to method for getting LBS and database query...
+		StringBuilder url = new StringBuilder(ApplicationConstants.getURLString());
+		url.append("?"+LAT_PARAM+"="+c.getLat()+
+	    		   "&"+LONG_PARAM+"="+c.getLng());
+		
+		if (SessionCommon.getVaribles().getCurrentTractBean() != null) {
+	        VCTractBean tb = SessionCommon.getVaribles().getCurrentTractBean();		
+		    url.append("&"+TRACT_PARAM+"="+tb.getTractce()+
+		    		   "&"+BLOCK_GROUP_PARAM+"="+tb.getBlkgrpce()+
+		    		   "&"+BLOCK_PARAM+"="+tb.getBlockce());
+		} 
+        Log.d(this.getClass().getName(), url.toString());
+        XmlPullTractParser xptp = new XmlPullTractParser(url.toString());
+		VCTractBean tb = (VCTractBean)xptp.parse();
+		GeoPoint gpt = new GeoPoint((int)(c.getLat()*1E6),(int)(c.getLng()*1E6));
+		tb.setRequestClickPnt(gpt);
+		SessionCommon.getVaribles().setCurrentTractBean(tb);
+		setTract(tb.getTractce());
+		setBg(tb.getBlkgrpce());
+		setBlock(tb.getBlockce());
+		if (tb.getBoundryVertices() != null && tb.getBoundryVertices().size() > 0) {
+		    Toast.makeText( 
+                getBaseContext(), "Updating Tract " + tb.getTractce() + " on map.", 
+                Toast.LENGTH_LONG).show();
+		    //NOTE: Later version may have the ability to add additional tract boundary, but the
+		    //first version of the software does not support that.
+		    boolean addBoundaryToOverlays = false;
+		    VCController.drawTractBoundary(gpt, addBoundaryToOverlays);
+		}
+	}
+		
+	public String getTract() {
+		return (String)tractTV.getText();
+	}
+	
+	public void setTract(String tract) {
+		this.tractTX = tract;
+		tractTV.setText(tractTX);
+	}
+	
+	public String getBg() {
+		return (String)bgTV.getText();
+	}
+	
+	public void setBg(String bg) {
+		this.bgTX = bg;
+		bgTV.setText(bgTX);
+	}
+	
+	public String getBlock() {
+		return (String)blockTV.getText();
+	}
+	
+	public void setBlock(String block) {
+		this.blockTX = block;
+		blockTV.setText(blockTX);
+	}
+}

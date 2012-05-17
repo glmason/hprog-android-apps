@@ -1,0 +1,23 @@
+package com.hprog.vcen.android;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.hprog.vcen.android.view.StatsDrawableView;
+
+public class DrawableStats extends Activity {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.d("FirstDraw", "starting app");
+		setContentView(new StatsDrawableView(this));
+		VCController.register(this);
+	}
+}

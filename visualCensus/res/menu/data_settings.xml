@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+  	android:id="@+id/demographic"
+  	android:title="Choose Dataset"
+  	android:icon="@android:drawable/ic_menu_preferences"
+  	android:orderInCategory="1">
+  </item>
+    <item
+  	android:id="@+id/otp2"
+  	android:title="Submit Query"
+  	android:icon="@android:drawable/ic_menu_search"
+  	android:orderInCategory="2">
+  </item>
+    <item
+  	android:id="@+id/opt3"
+  	android:title="Save Demographic"
+    android:icon="@android:drawable/ic_menu_save"  	
+    android:orderInCategory="3">
+  </item>
+    <item
+  	android:id="@+id/opt4"
+  	android:title="Option 4"
+  	android:orderInCategory="4">
+  </item>
+    <item
+  	android:id="@+id/opt5"
+  	android:title="Option 5"
+  	android:orderInCategory="5">
+  </item>
+    <item
+  	android:id="@+id/opt6"
+  	android:title="Option 6"
+  	android:orderInCategory="6">
+  </item>
+    <item
+  	android:id="@+id/opt7"
+  	android:title="Option 7"
+  	android:orderInCategory="7">
+  </item>
+  
+</menu>
